@@ -77,7 +77,7 @@ class Factory
         $app = \EasyWeChat\Factory::$functionName($config);
         $app->rebind('cache', $this->cache);
         $app['guzzle_handler'] = CoroutineHandler::class;
-        $app->rebind('request', $this->getRequest());
+        $app->rebind('request', $this->getRequest($functionName));
         return $app;
     }
 
