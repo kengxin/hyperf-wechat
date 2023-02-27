@@ -94,10 +94,13 @@ class Factory
     /**
      * 获取Request请求
      */
-    private function getRequest(): Request
+    private function getRequest($functionName)
     {
         $request = $this->container->get(RequestInterface::class);
-        //return $this->container->get(RequestInterface::class);
+        if ($functionName != 'officialAccount' && $functionName != 'miniProgram') {
+            return $this->container->get(RequestInterface::class);
+        }
+
         $uploadFiles = $request->getUploadedFiles() ?? [];
         $files = [];
         foreach ($uploadFiles as $k => $v) {
