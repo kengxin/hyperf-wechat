@@ -97,7 +97,7 @@ class Factory
     private function getRequest($functionName)
     {
         $request = $this->container->get(RequestInterface::class);
-        if ($functionName != 'officialAccount' && $functionName != 'miniProgram') {
+        if ($functionName != 'miniProgram') {
             return $this->container->get(RequestInterface::class);
         }
 
