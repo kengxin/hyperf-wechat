@@ -77,7 +77,12 @@ class Factory
         $app = \EasyWeChat\Factory::$functionName($config);
         $app->rebind('cache', $this->cache);
         $app['guzzle_handler'] = CoroutineHandler::class;
-        $app->rebind('request', $this->getRequest($functionName));
+        
+        try {
+            $request = $this->getRequest();
+            $app->rebind('request', $request);
+        } catch (\Throwable $e) {}
+
         return $app;
     }
 
@@ -94,11 +99,11 @@ class Factory
     /**
      * 获取Request请求
      */
-    private function getRequest($functionName)
+    private function getRequest($requestInterface = false)
     {
-        return $this->container->get(RequestInterface::class);
-        if ($functionName != 'officialAccount' && $functionName != 'miniProgram') {
-            return $this->container->get(RequestInterface::class);
+        $request = $this->container->get(RequestInterface::class);
+        if ($requestInterface) {
+            return $request;
         }
 
         $uploadFiles = $request->getUploadedFiles() ?? [];
@@ -118,3 +123,4 @@ class Factory
         );
     }
 }
+
